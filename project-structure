@@ -1,0 +1,9 @@
+src/
+  components/
+    SubtitleList.jsx      # 字幕列表展示组件
+    TranslationConfig.jsx # 翻译配置组件
+    FileUpload.jsx       # 文件上传组件
+  utils/
+    srtParser.js         # srt解析工具
+    translator.js        # 翻译API调用
+  App.jsx 
