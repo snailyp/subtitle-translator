@@ -1,4 +1,4 @@
-import { Button, Checkbox, List, message, Space, Tag, Tooltip, Typography } from 'antd';
+import { Button, Checkbox, Dropdown, List, Menu, message, Space, Tag, Tooltip, Typography } from 'antd';
 import React, { useState } from 'react';
 import { exportSRT } from '../utils/exportSrt';
 import { getSubtitleContext, translateText } from '../utils/translator';
@@ -9,6 +9,29 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // 计算当前页的字幕索引范围
+  const getCurrentPageIndices = () => {
+    const start = (currentPage - 1) * pageSize;
+    const end = Math.min(start + pageSize, subtitles.length);
+    return Array.from({ length: end - start }, (_, i) => start + i);
+  };
+
+  // 选择当前页
+  const selectCurrentPage = () => {
+    setSelectedItems([...new Set([...selectedItems, ...getCurrentPageIndices()])]);
+  };
+
+  // 选择所有页
+  const selectAllPages = () => {
+    setSelectedItems(subtitles.map((_, index) => index));
+  };
+
+  // 取消所有选择
+  const deselectAll = () => {
+    setSelectedItems([]);
+  };
 
   const handleTranslate = async () => {
     if (!translationConfig.apiKey || !translationConfig.models.length) {
@@ -108,22 +131,37 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
     </List.Item>
   );
 
+  const selectionMenu = (
+    <Menu
+      items={[
+        {
+          key: 'currentPage',
+          label: '选择本页',
+          onClick: selectCurrentPage,
+        },
+        {
+          key: 'allPages',
+          label: '选择所有',
+          onClick: selectAllPages,
+        },
+      ]}
+    />
+  );
+
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>
-        <Checkbox
-          checked={selectedItems.length === subtitles.length}
-          indeterminate={selectedItems.length > 0 && selectedItems.length < subtitles.length}
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedItems(subtitles.map((_, index) => index));
-            } else {
-              setSelectedItems([]);
-            }
-          }}
+        <Dropdown.Button 
+          overlay={selectionMenu}
+          onClick={selectCurrentPage}
         >
-          全选
-        </Checkbox>
+          选择本页
+        </Dropdown.Button>
+        {selectedItems.length > 0 && (
+          <Button onClick={deselectAll}>
+            取消选择 ({selectedItems.length})
+          </Button>
+        )}
         <Button
           type="primary"
           onClick={handleTranslate}
@@ -150,8 +188,16 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
           pageSize: pageSize,
           showSizeChanger: true,
           showQuickJumper: true,
+          current: currentPage,
+          onChange: (page, size) => {
+            setCurrentPage(page);
+            if (size !== pageSize) {
+              setPageSize(size);
+            }
+          },
           onShowSizeChange: (current, size) => {
             setPageSize(size);
+            setCurrentPage(1);
           },
         }}
       />
