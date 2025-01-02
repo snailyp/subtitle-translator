@@ -7,7 +7,7 @@ export const parseSRT = (content) => {
     if (lines.length >= 3) {
       const index = parseInt(lines[0]);
       const timestamp = lines[1];
-      const text = lines.slice(2).join("\r\n");
+      const text = lines.slice(2).join(" ");
 
       subtitles.push({
         index,

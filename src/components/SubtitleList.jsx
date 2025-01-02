@@ -1,4 +1,4 @@
-import { Button, Checkbox, Dropdown, List, Menu, message, Space, Tag, Tooltip, Typography } from 'antd';
+import { Button, Checkbox, Dropdown, Input, List, Menu, message, Modal, Popconfirm, Space, Tag, Tooltip, Typography } from 'antd';
 import React, { useState } from 'react';
 import { exportSRT } from '../utils/exportSrt';
 import { getSubtitleContext, translateText } from '../utils/translator';
@@ -10,6 +10,10 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
   const [loading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingModel, setEditingModel] = useState(null);
+  const [editingText, setEditingText] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   // 计算当前页的字幕索引范围
   const getCurrentPageIndices = () => {
@@ -92,6 +96,37 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
     }
   };
 
+  // 处理编辑
+  const handleEdit = (index, model, text) => {
+    setEditingIndex(index);
+    setEditingModel(model);
+    setEditingText(text);
+    setModalVisible(true);
+  };
+
+  // 保存编辑
+  const handleSaveEdit = () => {
+    if (editingIndex !== null && editingModel) {
+      subtitles[editingIndex].translations[editingModel] = editingText;
+      setModalVisible(false);
+      setEditingIndex(null);
+      setEditingModel(null);
+      setEditingText('');
+      // 强制更新组件
+      setSelectedItems([...selectedItems]);
+    }
+  };
+
+  // 处理删除
+  const handleDelete = (index, model) => {
+    delete subtitles[index].translations[model];
+    if (subtitles[index].selectedTranslation === model) {
+      subtitles[index].selectedTranslation = Object.keys(subtitles[index].translations)[0] || null;
+    }
+    // 强制更新组件
+    setSelectedItems([...selectedItems]);
+  };
+
   const renderItem = (item, index) => (
     <List.Item>
       <Space direction="vertical" style={{ width: '100%' }}>
@@ -118,13 +153,32 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
               {model}
             </Tag>
             <Text>{translation}</Text>
-            <Button
-              type="link"
-              size="small"
-              onClick={() => handleSelectTranslation(index, model)}
-            >
-              选择此翻译
-            </Button>
+            <Space>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => handleSelectTranslation(index, model)}
+              >
+                选择此翻译
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => handleEdit(index, model, translation)}
+              >
+                编辑
+              </Button>
+              <Popconfirm
+                title="确定要删除这个翻译吗?"
+                onConfirm={() => handleDelete(index, model)}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Button type="link" size="small" danger>
+                  删除
+                </Button>
+              </Popconfirm>
+            </Space>
           </Space>
         ))}
       </Space>
@@ -185,22 +239,31 @@ const SubtitleList = ({ subtitles, translationConfig }) => {
         dataSource={subtitles}
         renderItem={renderItem}
         pagination={{
+          current: currentPage,
           pageSize: pageSize,
           showSizeChanger: true,
           showQuickJumper: true,
-          current: currentPage,
-          onChange: (page, size) => {
-            setCurrentPage(page);
-            if (size !== pageSize) {
-              setPageSize(size);
-            }
-          },
+          onChange: (page) => setCurrentPage(page),
           onShowSizeChange: (current, size) => {
             setPageSize(size);
-            setCurrentPage(1);
           },
         }}
       />
+
+      <Modal
+        title="编辑翻译"
+        open={modalVisible}
+        onOk={handleSaveEdit}
+        onCancel={() => setModalVisible(false)}
+        okText="保存"
+        cancelText="取消"
+      >
+        <Input.TextArea
+          value={editingText}
+          onChange={(e) => setEditingText(e.target.value)}
+          rows={4}
+        />
+      </Modal>
     </div>
   );
 };
