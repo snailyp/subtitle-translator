@@ -21,6 +21,22 @@ function App() {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
+      <div 
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%) rotate(-45deg)',
+          fontSize: '48px',
+          color: 'rgba(0, 0, 0, 0.1)',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+          zIndex: 100,
+          userSelect: 'none'
+        }}
+      >
+        @snaily
+      </div>
       <Header style={{ 
         background: '#fff',
         padding: '0 20px',
