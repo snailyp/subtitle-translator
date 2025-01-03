@@ -42,7 +42,8 @@ function App() {
         padding: '0 20px',
         borderBottom: '1px solid #f0f0f0',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
       }}>
         <Space size={12}>
           <TranslationOutlined style={{ 
@@ -59,6 +60,21 @@ function App() {
           >
             字幕翻译工具
           </Title>
+        </Space>
+
+        <Space size={20}>
+          <Typography.Link href="https://linux.do/u/snaily" target="_blank">
+            <Avatar 
+              src="https://linux.do/user_avatar/linux.do/snaily/288/306510_2.gif"
+              size="small"
+            />
+          </Typography.Link>
+          <Typography.Link href="https://linux.do/u/snaily" target="_blank">
+            <HomeOutlined /> snaily
+          </Typography.Link>
+          <Typography.Link href="https://github.com/snailyp/subtitle-translator" target="_blank">
+            <GithubOutlined /> GitHub
+          </Typography.Link>
         </Space>
       </Header>
       <Content style={{ padding: '20px' }}>
@@ -81,22 +97,12 @@ function App() {
       <Footer style={{
         textAlign: 'center',
         background: '#fff',
-        borderTop: '1px solid #f0f0f0'
+        borderTop: '1px solid #f0f0f0',
+        padding: '12px 20px'
       }}>
-        <Space size={20}>
-          <Typography.Link href="https://linux.do/u/snaily" target="_blank">
-            <Avatar 
-              src="https://linux.do/user_avatar/linux.do/snaily/288/306510_2.gif"
-              size="small"
-            />
-          </Typography.Link>
-          <Typography.Link href="https://linux.do/u/snaily" target="_blank">
-            <HomeOutlined /> snaily
-          </Typography.Link>
-          <Typography.Link href="https://github.com/snailyp/subtitle-translator" target="_blank">
-            <GithubOutlined /> GitHub
-          </Typography.Link>
-        </Space>
+        <Typography.Text type="secondary">
+          Copyright © {new Date().getFullYear()} snaily. All rights reserved.
+        </Typography.Text>
       </Footer>
     </Layout>
   );
