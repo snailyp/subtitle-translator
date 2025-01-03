@@ -2,6 +2,7 @@ import { Layout, Typography } from 'antd';
 import React, { useState } from 'react';
 import FileUpload from './components/FileUpload';
 import SubtitleList from './components/SubtitleList';
+import ToolBox from './components/ToolBox';
 import TranslationConfig from './components/TranslationConfig';
 
 const { Header, Content } = Layout;
@@ -28,6 +29,10 @@ function App() {
           <TranslationConfig 
             config={translationConfig}
             onConfigChange={setTranslationConfig}
+          />
+          <ToolBox
+            subtitles={subtitles}
+            onSubtitlesChange={setSubtitles}
           />
           <SubtitleList 
             subtitles={subtitles}
