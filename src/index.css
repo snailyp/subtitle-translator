@@ -40,3 +40,8 @@ code {
   color: rgba(0, 0, 0, 0.1);
   white-space: nowrap;
 }
+
+/* 添加以下样式以确保固定视频区域不阻挡鼠标事件 */
+.fixed-video {
+  pointer-events: auto;
+}

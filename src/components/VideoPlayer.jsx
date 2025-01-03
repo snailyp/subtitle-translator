@@ -11,7 +11,7 @@ const VideoPlayer = ({ subtitles }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [currentSubtitle, setCurrentSubtitle] = useState(null);
   const [scale, setScale] = useState(() => {
-    return localStorage.getItem('videoScale') || 0.4;
+    return parseFloat(localStorage.getItem('videoScale')) || 0.4;
   });
   const [position, setPosition] = useState(() => {
     return JSON.parse(localStorage.getItem('videoPosition')) || { x: 20, y: 20 };
@@ -125,7 +125,7 @@ const VideoPlayer = ({ subtitles }) => {
         transform: 'translateX(-50%)',
         borderRadius: '4px',
         maxWidth: '80%',
-        zIndex: 1
+        zIndex: 2
       }}>
         {text}
       </div>
@@ -135,16 +135,18 @@ const VideoPlayer = ({ subtitles }) => {
   return (
     <Card 
       title={
-        <div style={{ cursor: isFixed ? 'move' : 'default' }}>
+        <div style={{ cursor: isFixed ? 'move' : 'default', position: 'relative', zIndex: 3 }}>
           视频预览
           <Space style={{ marginLeft: 16 }}>
             <Button
               icon={<ZoomOutOutlined />}
               onClick={() => setScale(s => Math.max(0.2, s - 0.1))}
+              style={{ zIndex: 4 }}
             />
             <Button
               icon={<ZoomInOutlined />}
               onClick={() => setScale(s => Math.min(1, s + 0.1))}
+              style={{ zIndex: 4 }}
             />
           </Space>
         </div>
@@ -156,7 +158,7 @@ const VideoPlayer = ({ subtitles }) => {
         width: isFixed ? '40%' : '100%',
         transform: isFixed ? `scale(${scale})` : 'none',
         transformOrigin: 'top right',
-        zIndex: isFixed ? 1000 : 1,
+        zIndex: isFixed ? 1001 : 1,
         backgroundColor: '#fff',
         boxShadow: isFixed ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
         cursor: isDragging ? 'move' : 'auto',
