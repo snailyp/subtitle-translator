@@ -5,6 +5,7 @@ import ConfigBox from './components/ConfigBox';
 import FileUpload from './components/FileUpload';
 import SubtitleBox from './components/SubtitleBox';
 import ToolBox from './components/ToolBox';
+import VideoPlayer from './components/VideoPlayer';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -80,6 +81,7 @@ function App() {
       <Content style={{ padding: '20px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <FileUpload onSubtitlesLoad={setSubtitles} />
+          <VideoPlayer subtitles={subtitles} />
           <Collapse 
             defaultActiveKey={['config', 'tools', 'subtitles']}
             style={{ marginBottom: 20 }}
