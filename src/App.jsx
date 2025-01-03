@@ -1,12 +1,12 @@
-import { TranslationOutlined } from '@ant-design/icons';
-import { Layout, Space, Typography } from 'antd';
+import { GithubOutlined, HomeOutlined, TranslationOutlined } from '@ant-design/icons';
+import { Avatar, Layout, Space, Typography } from 'antd';
 import React, { useState } from 'react';
 import ConfigBox from './components/ConfigBox';
 import FileUpload from './components/FileUpload';
 import SubtitleBox from './components/SubtitleBox';
 import ToolBox from './components/ToolBox';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 function App() {
@@ -78,6 +78,26 @@ function App() {
           />
         </div>
       </Content>
+      <Footer style={{
+        textAlign: 'center',
+        background: '#fff',
+        borderTop: '1px solid #f0f0f0'
+      }}>
+        <Space size={20}>
+          <Typography.Link href="https://linux.do/u/snaily" target="_blank">
+            <Avatar 
+              src="https://linux.do/user_avatar/linux.do/snaily/288/306510_2.gif"
+              size="small"
+            />
+          </Typography.Link>
+          <Typography.Link href="https://linux.do/u/snaily" target="_blank">
+            <HomeOutlined /> snaily
+          </Typography.Link>
+          <Typography.Link href="https://github.com/snailyp/subtitle-translator" target="_blank">
+            <GithubOutlined /> GitHub
+          </Typography.Link>
+        </Space>
+      </Footer>
     </Layout>
   );
 }
