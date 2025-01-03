@@ -58,7 +58,6 @@ const TranslationConfig = ({ config, onConfigChange }) => {
       initialValues={config}
       onValuesChange={handleValuesChange}
       layout="vertical"
-      style={{ marginBottom: 20 }}
     >
       <Space style={{ width: '100%' }} direction="vertical">
         <Form.Item label="API Base URL" name="baseUrl">
