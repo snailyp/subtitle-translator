@@ -1,5 +1,5 @@
 import { GithubOutlined, HomeOutlined, TranslationOutlined } from '@ant-design/icons';
-import { Avatar, Layout, Space, Typography } from 'antd';
+import { Avatar, Collapse, Layout, Space, Typography } from 'antd';
 import React, { useState } from 'react';
 import ConfigBox from './components/ConfigBox';
 import FileUpload from './components/FileUpload';
@@ -80,18 +80,31 @@ function App() {
       <Content style={{ padding: '20px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <FileUpload onSubtitlesLoad={setSubtitles} />
-          <ConfigBox
-            config={translationConfig}
-            onConfigChange={setTranslationConfig}
-          />
-          <ToolBox
-            subtitles={subtitles}
-            onSubtitlesChange={setSubtitles}
-          />
-          <SubtitleBox 
-            subtitles={subtitles}
-            translationConfig={translationConfig}
-          />
+          <Collapse 
+            defaultActiveKey={['config', 'tools', 'subtitles']}
+            style={{ marginBottom: 20 }}
+          >
+            <Collapse.Panel header="翻译配置" key="config">
+              <ConfigBox
+                config={translationConfig}
+                onConfigChange={setTranslationConfig}
+              />
+            </Collapse.Panel>
+            
+            <Collapse.Panel header="工具箱" key="tools">
+              <ToolBox
+                subtitles={subtitles}
+                onSubtitlesChange={setSubtitles}
+              />
+            </Collapse.Panel>
+            
+            <Collapse.Panel header="字幕列表" key="subtitles">
+              <SubtitleBox 
+                subtitles={subtitles}
+                translationConfig={translationConfig}
+              />
+            </Collapse.Panel>
+          </Collapse>
         </div>
       </Content>
       <Footer style={{

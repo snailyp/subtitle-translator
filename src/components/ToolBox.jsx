@@ -1,4 +1,4 @@
-import { Card, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import React from 'react';
 import SubtitleMerger from './SubtitleMerger';
 
@@ -15,9 +15,7 @@ const ToolBox = ({ subtitles, onSubtitlesChange }) => {
   ];
 
   return (
-    <Card title="工具箱" style={{ marginBottom: 20 }}>
-      <Tabs items={items} />
-    </Card>
+    <Tabs items={items} />
   );
 };
 
